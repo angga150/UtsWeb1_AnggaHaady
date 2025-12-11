@@ -1,155 +1,158 @@
 <?php
 session_start();
 
-if( isset($_SESSION['username']) ) {
+// Cek apakah user sudah login
+if (isset($_SESSION['username'])) {
     header("Location: dashboard.php");
     exit;
 }
 
-if( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
+// Proses login saat form dikirim
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
-    if( $username == 'admin' && $password == '123' ) {
+    // Login sederhana (username: ridho, password: 12345)
+    if ($username === 'angga' && $password === '12345') {
         $_SESSION['username'] = $username;
+        $_SESSION['role'] = 'Mahasiswa'; // Contoh role
         header("Location: dashboard.php");
         exit;
+    } else {
+        $error = "Username atau password salah!";
     }
-    else {
-        $error = "user & pass salah";
-    }
-
 }
-
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Login</title>
+    <title>Login - POLGAN MART</title>
     <style>
-            * {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-body {
-  background: #f5f8ff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #4c8cf5, #1a57e2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.login-container {
-  background: #fff;
-  padding: 2rem 2.5rem;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  width: 320px;
-  text-align: center;
-}
+        .login-container {
+            background: #fff;
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
 
-h2 {
-  color: #1a57e2;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
+        .login-container h2 {
+            margin-bottom: 1rem;
+            color: #1a57e2;
+        }
 
-.error-message {
-  background: #ffe5e5;
-  color: #d93025;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
+        .login-container p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
 
-form {
-  text-align: left;
-}
+        .input-group {
+            text-align: left;
+            margin-bottom: 1.2rem;
+        }
 
-label {
-  display: block;
-  font-size: 0.9rem;
-  margin: 0.5rem 0 0.3rem;
-  color: #333;
-}
+        .input-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+            color: #333;
+        }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #dcdcdc;
-  border-radius: 6px;
-  outline: none;
-  font-size: 0.9rem;
-}
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+        }
 
-input:focus {
-  border-color: #1a57e2;
-  box-shadow: 0 0 4px rgba(26, 87, 226, 0.3);
-}
+        .input-group input:focus {
+            border-color: #1a57e2;
+            outline: none;
+            box-shadow: 0 0 5px rgba(26, 87, 226, 0.3);
+        }
 
-.login-btn {
-  width: 100%;
-  background: #1a57e2;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 1rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
+        .btn {
+            background: #1a57e2;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+            width: 100%;
+        }
 
-.login-btn:hover {
-  background: #004ad9;
-}
+        .btn:hover {
+            background: #0f3fb0;
+        }
 
-.cancel-btn {
-  width: 100%;
-  background: #fff;
-  color: #333;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 1rem;
-  margin-top: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+        .error-message {
+            background: #ffe6e6;
+            color: #b30000;
+            border: 1px solid #ff9999;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
 
-.cancel-btn:hover {
-  background: #f0f0f0;
-}
-
-footer {
-  font-size: 0.8rem;
-  color: #777;
-  margin-top: 1.5rem;
-}
-
+        .footer-text {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <h2>POLGAN MART</h2>
-    <form action="" method="post">
-        <!-- username : <input type="text" name="username" placeholder="masukan username"><br>
-        password : <input type="password" name="password" placeholder="masukan password"><br> -->
 
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="masukan username">
+    <div class="login-container">
+        <h2>POLGAN MART</h2>
+        <p>Silakan login untuk melanjutkan</p>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Masukan Password">
+        <?php if (!empty($error)): ?>
+            <div class="error-message"><?= $error; ?></div>
+        <?php endif; ?>
 
-        <button type="submit" class="login-btn">Login</button>
+        <form method="post">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Masukkan username" required>
+            </div>
 
-    </form>
-</div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Masukkan password" required>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <div class="footer-text">
+            &copy; <?= date('Y'); ?> POLGAN MART — Sistem Penjualan Sederhana
+        </div>
+    </div>
+
 </body>
 </html>
